@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/*
+  Light-only palette. Neutral greys, one dark tone for primary actions.
+*/
+:root {
+  --bg: #ffffff;
+  --panel: #fafafa;
+  --title: #171717;
+  --body: #404040;
+  --muted: #737373;
+  --line: #e5e5e5;
+  --line-soft: #ededed;
+  --solid: #404040;
+  --solid-ink: #ffffff;
+  --chip: #f5f5f5;
+  --live: #16a34a;
+  --off: #dc2626;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-title: var(--title);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-solid: var(--solid);
+  --color-solid-ink: var(--solid-ink);
+  --color-chip: var(--chip);
+  --color-live: var(--live);
+  --color-off: var(--off);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--body);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--title);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--title);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/*
+  Blueprint framing: dashed rules down both edges of the content column,
+  drawn as gradients so they stay crisp at any zoom.
+*/
+.frame {
+  position: relative;
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-image: repeating-linear-gradient(to bottom, var(--line) 0 4px, transparent 4px 8px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.frame::before {
+  left: 0;
+}
+
+.frame::after {
+  right: 0;
+}
+
+/* Full-bleed dashed separator between sections. */
+.rule {
+  position: relative;
+}
+
+.rule::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  height: 1px;
+  background-image: repeating-linear-gradient(to right, var(--line) 0 4px, transparent 4px 8px);
+  pointer-events: none;
+}
+
+/* Dotted graph field for the empty band above the profile. */
+.dotfield {
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Accordion chevron. */
+details[open] .chev {
+  transform: rotate(180deg);
+}
+
+.chev {
+  transition: transform 0.2s ease;
+}
+
+/*
+  Scroll-reveal. Gated on `scripting: enabled` so the hidden state only
+  exists where the observer can actually reveal it — no inline flag script,
+  and content is never invisible without JS. Browsers that don't support
+  the query simply skip the animation and show content immediately.
+*/
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .chev {
+    transition: none;
+  }
+}
